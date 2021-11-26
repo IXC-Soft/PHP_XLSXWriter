@@ -1,3 +1,11 @@
+# [PHP_XLSXWriter](https://github.com/mk-j/PHP_XLSXWriter) by IXCSoft
+
+Pacote adaptado para funcionamento no ERP IXCProvedor.
+
+### Instalação
+
+`composer require ixc-soft/tcpdf`
+
 PHP_XLSXWriter
 ==============
 

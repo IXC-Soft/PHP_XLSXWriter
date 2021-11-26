@@ -371,9 +371,17 @@ class XLSXWriter
 		} elseif (is_string($value) && $value[0]=='='){
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="s"><f>'.self::xmlspecialchars($value).'</f></c>');
 		} elseif ($num_format_type=='n_date') {
-			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
+            if (strtotime($value) > 0){
+                $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
+            }else{
+                $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
+            }
 		} elseif ($num_format_type=='n_datetime') {
-			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.self::convert_date_time($value).'</v></c>');
+            if (strtotime($value) > 0){
+                $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.self::convert_date_time($value).'</v></c>');
+            }else{
+                $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
+            }
 		} elseif ($num_format_type=='n_numeric') {
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.self::xmlspecialchars($value).'</v></c>');//int,float,currency
 		} elseif ($num_format_type=='n_string') {
@@ -798,8 +806,8 @@ class XLSXWriter
 
 		if      ($num_format=='string')   $num_format='@';
 		else if ($num_format=='integer')  $num_format='0';
-		else if ($num_format=='date')     $num_format='YYYY-MM-DD';
-		else if ($num_format=='datetime') $num_format='YYYY-MM-DD HH:MM:SS';
+		else if ($num_format=='date')     $num_format='DD/MM/YYYY';
+		else if ($num_format=='datetime') $num_format='DD/MM/YYYY HH:MM:SS';
         else if ($num_format=='time')     $num_format='HH:MM:SS';
 		else if ($num_format=='price')    $num_format='#,##0.00';
 		else if ($num_format=='dollar')   $num_format='[$$-1009]#,##0.00;[RED]-[$$-1009]#,##0.00';
