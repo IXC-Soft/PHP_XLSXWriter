@@ -4,7 +4,7 @@ Pacote adaptado para funcionamento no ERP IXCProvedor.
 
 ### Instalação
 
-`composer require ixc-soft/tcpdf`
+`composer require ixc-soft/php_xlsxwriter`
 
 PHP_XLSXWriter
 ==============
