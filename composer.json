@@ -9,10 +9,7 @@
     "autoload": {
         "classmap": ["xlsxwriter.class.php"]
     },
-    "require-dev": {
-    },
     "require": {
-        "php": ">=5.2.1",
-        "ext-zip": "*"
+        "php": ">=5.2.1"
     }
 }
