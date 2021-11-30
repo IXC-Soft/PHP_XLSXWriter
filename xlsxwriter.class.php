@@ -799,38 +799,23 @@ class XLSXWriter
 		return 'n_auto';
 	}
 	//------------------------------------------------------------------
-	private static function numberFormatStandardized($num_format)
-	{
-		if ($num_format=='money') { $num_format='dollar'; }
-		if ($num_format=='number') { $num_format='integer'; }
-
-		if      ($num_format=='string')   $num_format='@';
-		else if ($num_format=='integer')  $num_format='0';
-		else if ($num_format=='date')     $num_format='DD/MM/YYYY';
-		else if ($num_format=='datetime') $num_format='DD/MM/YYYY HH:MM:SS';
-        else if ($num_format=='time')     $num_format='HH:MM:SS';
-		else if ($num_format=='price')    $num_format='#,##0.00';
-		else if ($num_format=='dollar')   $num_format='[$$-1009]#,##0.00;[RED]-[$$-1009]#,##0.00';
-		else if ($num_format=='euro')     $num_format='#,##0.00 [$€-407];[RED]-#,##0.00 [$€-407]';
-		$ignore_until='';
-		$escaped = '';
-		for($i=0,$ix=strlen($num_format); $i<$ix; $i++)
-		{
-			$c = $num_format[$i];
-			if ($ignore_until=='' && $c=='[')
-				$ignore_until=']';
-			else if ($ignore_until=='' && $c=='"')
-				$ignore_until='"';
-			else if ($ignore_until==$c)
-				$ignore_until='';
-			if ($ignore_until=='' && ($c==' ' || $c=='-'  || $c=='('  || $c==')') && ($i==0 || $num_format[$i-1]!='_'))
-				$escaped.= "\\".$c;
-			else
-				$escaped.= $c;
-		}
-		return $escaped;
-	}
-	//------------------------------------------------------------------
+    private static function numberFormatStandardized($num_format)
+    {
+        if ($num_format=='number') { $num_format='integer'; }
+        
+        if ($num_format == 'string') $num_format = 'GENERAL';
+        else if ($num_format == 'integer') $num_format = '0';
+        else if ($num_format == 'date') $num_format = 'DD/MM/YYYY';
+        else if ($num_format == 'datetime') $num_format = 'DD/MM/YYYY HH:MM:SS';
+        else if ($num_format == 'time') $num_format = 'HH:MM:SS';
+        else if ($num_format == 'money') $num_format = '_( R$ * #,##0.00_); _(R$ * #,##0.00_);_( R$ *  - ??_)';
+        
+        $escaped = '';
+        for ($i = 0, $ix = strlen($num_format); $i < $ix; $i++) {
+            $escaped .= $num_format[$i];
+        }
+        return $escaped;
+    }	//------------------------------------------------------------------
 	public static function add_to_list_get_index(&$haystack, $needle)
 	{
 		$existing_idx = array_search($needle, $haystack, $strict=true);
