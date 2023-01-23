@@ -362,7 +362,10 @@ class XLSXWriter
 		$this->finalizeSheet($sheet_name);
 	}
 
-	protected function writeCell(XLSXWriter_BuffererWriter &$file, $row_number, $column_number, $value, $num_format_type, $cell_style_idx)
+    /**
+     * @throws Exception
+     */
+    protected function writeCell(XLSXWriter_BuffererWriter &$file, $row_number, $column_number, $value, $num_format_type, $cell_style_idx)
 	{
 		$cell_name = self::xlsCell($row_number, $column_number);
 
@@ -374,7 +377,13 @@ class XLSXWriter
             if (strtotime($value) > 0){
                 $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
             }else{
-                $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
+                $DateTime = new DateTimeImmutable($value);
+                $dateFormatted = $DateTime->format('d/m/Y');
+                if (is_string($dateFormatted) && strlen($dateFormatted) >= 10){
+                    $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
+                } else {
+                    $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
+                }
             }
 		} elseif ($num_format_type=='n_datetime') {
             if (strtotime($value) > 0){
