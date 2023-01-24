@@ -377,10 +377,14 @@ class XLSXWriter
             if (strtotime($value) > 0){
                 $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
             }else{
-                $DateTime = new DateTimeImmutable($value);
-                $dateFormatted = $DateTime->format('d/m/Y');
-                if (is_string($dateFormatted) && strlen($dateFormatted) >= 10){
-                    $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
+                if ($value != '' && $value != '0000-00-00'){
+                    $DateTime = new DateTimeImmutable($value);
+                    $dateFormatted = $DateTime->format('d/m/Y');
+                    if (is_string($dateFormatted) && strlen($dateFormatted) >= 10){
+                        $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
+                    } else {
+                        $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
+                    }
                 } else {
                     $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
                 }
