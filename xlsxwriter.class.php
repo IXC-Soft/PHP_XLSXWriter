@@ -395,6 +395,8 @@ class XLSXWriter
             }else{
                 $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v></v></c>');
             }
+		} elseif (self::exceedsNumericPrecision($value)) {
+			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="inlineStr"><is><t>'.self::xmlspecialchars($value).'</t></is></c>');
 		} elseif ($num_format_type=='n_numeric') {
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.self::xmlspecialchars($value).'</v></c>');//int,float,currency
 		} elseif ($num_format_type=='n_string') {
@@ -793,6 +795,11 @@ class XLSXWriter
 		reset($arr);
 		$first_key = key($arr);
 		return $first_key;
+	}
+	//------------------------------------------------------------------
+	private static function exceedsNumericPrecision($value)
+	{
+		return is_string($value) && preg_match('/^-?[0-9]+$/', $value) && strlen(ltrim($value, '-0')) > 15;
 	}
 	//------------------------------------------------------------------
 	private static function determineNumberFormatType($num_format)
